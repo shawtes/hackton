@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section">
+    <img src="{{ url_for('static', filename='images/va-clinic.jpg') }}" alt="Valdosta Medicine Clinic" class="hero-image">
+    <div class="hero-overlay">
+        <h1>Welcome to Valdosta Medicine</h1>
+        <p>Providing Excellence in Healthcare to South Georgia</p>
+        {% if not current_user.is_authenticated %}
+        <div class="hero-buttons">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Access Patient Portal</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">New Patient Registration</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="content-section">
+    <div class="mission-statement">
+        <h2>Our Mission</h2>
+        <p>Valdosta Medicine is a not-for-profit medical system dedicated to being the leader in improving the health, wellness, and quality of life in the community.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">418</div>
+            <div class="stat-label">Licensed Beds</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">600+</div>
+            <div class="stat-label">Healthcare Providers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">2,900+</div>
+            <div class="stat-label">Dedicated Employees</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">400,000</div>
+            <div class="stat-label">Residents Served</div>
+        </div>
+    </div>
+
+    <div class="services-section">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-video"></i>
+                <h3>Telehealth Consultations</h3>
+                <p>Connect with your healthcare provider from the comfort of your home.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-user-md"></i>
+                <h3>Expert Care</h3>
+                <p>Access to over 600 healthcare providers across multiple specialties.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-hospital"></i>
+                <h3>Modern Facilities</h3>
+                <p>State-of-the-art medical facilities serving a 15-county area.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Emergency Care</h3>
+                <p>24/7 emergency services with rapid response times.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accreditation-section">
+        <h2>Accreditations & Memberships</h2>
+        <div class="accreditation-content">
+            <p>Valdosta Medicine is fully accredited by DNV's accreditation program, NIAHO®, meeting the highest standards of patient safety set forth by the U.S. Centers for Medicare and Medicaid Services.</p>
+            <div class="membership-list">
+                <div class="membership-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>American Hospital Association</span>
+                </div>
+                <div class="membership-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Georgia Hospital Association</span>
+                </div>
+                <div class="membership-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Southwest Georgia Hospital District</span>
+                </div>
+                <div class="membership-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Georgia Alliance of Community Hospitals</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        position: relative;
+        height: 600px;
+        margin: -20px -20px 0 -20px;
+        overflow: hidden;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 91, 170, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .hero-overlay h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-overlay p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-secondary {
+        background-color: white;
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .content-section {
+        padding: 4rem 2rem;
+    }
+
+    .mission-statement {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 4rem;
+    }
+
+    .mission-statement h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .services-section {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .service-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .service-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .accreditation-section {
+        background: #f8f9fa;
+        padding: 3rem;
+        border-radius: 10px;
+    }
+
+    .membership-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .membership-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .membership-item i {
+        color: var(--accent-color);
+    }
+
+    @media (max-width: 768px) {
+        .hero-overlay h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-overlay p {
+            font-size: 1.2rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %} 

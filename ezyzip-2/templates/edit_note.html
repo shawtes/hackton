@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Note</h2>
+<form method="post">
+    <label for="content">Note Content:</label>
+    <textarea name="content" required>{{ note.content }}</textarea>
+    <button type="submit">Update Note</button>
+</form>
+{% endblock %} 

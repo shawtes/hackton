@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Conversation</h2>
+<div id="messages">
+    {% for message in messages %}
+        <p><strong>{{ message.user.username }}:</strong> {{ message.content }}</p>
+    {% endfor %}
+</div>
+<input type="text" id="message" placeholder="Type a message">
+<button onclick="sendMessage()">Send</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        socket.emit('join', {'conversation_id': {{ conversation_id }}});
+    });
+    socket.on('receive_message', function(data) {
+        document.getElementById('messages').innerHTML += '<p><strong>' + data.user_id + ':</strong> ' + data.message + '</p>';
+    });
+    function sendMessage() {
+        var msg = document.getElementById('message').value;
+        socket.emit('send_message', {'message': msg, 'conversation_id': {{ conversation_id }}});
+        document.getElementById('message').value = '';
+    }
+</script>
+{% endblock %} 

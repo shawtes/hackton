@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Register</h2>
+<form method="post">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <label>
+        <input type="radio" name="account_type" value="patient" checked> Patient
+    </label>
+    <label>
+        <input type="radio" name="account_type" value="doctor"> Doctor
+    </label>
+    <button type="submit">Register</button>
+</form>
+{% endblock %} 

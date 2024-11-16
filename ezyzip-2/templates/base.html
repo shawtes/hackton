@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valdosta Medicine - Telehealth Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .navbar {
+            background-color: #4052b6;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-links .active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 140px);
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 1rem;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Common components styling */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #4052b6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2f3d8f;
+        }
+
+        /* Flash messages */
+        .flash-messages {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #4052b6;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4052b6;
+        }
+
+        /* Add Valdosta Medicine branding colors */
+        :root {
+            --primary-color: #005baa;  /* Valdosta Medicine Blue */
+            --secondary-color: #2f3d8f;
+            --accent-color: #00a651;   /* Valdosta Medicine Green */
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Add hospital info section */
+        .hospital-info {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+        }
+
+        .hospital-info h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .hospital-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="{{ url_for('home') }}" class="logo">
+                <i class="fas fa-hospital-user"></i> Valdosta Medicine
+            </a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('chat') }}" {% if request.endpoint == 'chat' %}class="active"{% endif %}>
+                        <i class="fas fa-comments"></i> Telehealth Chat
+                    </a>
+                    {% if current_user.is_doctor %}
+                    <a href="{{ url_for('notes') }}" {% if request.endpoint == 'notes' %}class="active"{% endif %}>
+                        <i class="fas fa-notes-medical"></i> Patient Notes
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('video_call') }}" {% if request.endpoint == 'video_call' %}class="active"{% endif %}>
+                        <i class="fas fa-video"></i> Video Consultation
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-primary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" {% if request.endpoint == 'login' %}class="active"{% endif %}>
+                        <i class="fas fa-sign-in-alt"></i> Patient Portal Login
+                    </a>
+                    <a href="{{ url_for('register') }}" {% if request.endpoint == 'register' %}class="active"{% endif %}>
+                        <i class="fas fa-user-plus"></i> New Patient Registration
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+
+        {% if request.endpoint == 'home' %}
+        <div class="hospital-info">
+            <h2>Welcome to Valdosta Medicine</h2>
+            <p>A not-for-profit medical system dedicated to improving health, wellness, and quality of life in our community.</p>
+            
+            <div class="hospital-stats">
+                <div class="stat-card">
+                    <div class="stat-number">418</div>
+                    <div>Licensed Beds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">600+</div>
+                    <div>Healthcare Providers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,900+</div>
+                    <div>Dedicated Employees</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">400,000</div>
+                    <div>Residents Served</div>
+                </div>
+            </div>
+
+            <h3>Our Commitment</h3>
+            <p>Valdosta Medicine is fully accredited by DNV's accreditation program and provides high-quality healthcare services across a 15-county service area. We are committed to caring for all patients, regardless of background, with no local tax support.</p>
+
+            <h3>Memberships & Accreditations</h3>
+            <ul>
+                <li>American Hospital Association</li>
+                <li>Georgia Hospital Association</li>
+                <li>Southwest Georgia Hospital District</li>
+                <li>Georgia Alliance of Community Hospitals</li>
+            </ul>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Valdosta Medicine. All rights reserved. Serving South Georgia with excellence in healthcare.</p>
+    </footer>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message) {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html> 
